@@ -16,11 +16,16 @@ public class MarkdownParse {
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
+            int exclamationMark = markdown.indexOf("!", currentIndex);
             if (openBracket < 0 || closeBracket < 0 || openParen < 0 
-                || closeParen < 0) 
+                || closeParen < 0) {
                 break;
+            }
             currentIndex = closeParen + 1;
             if (openParen != closeBracket + 1) {
+                continue;
+            }
+            if (exclamationMark == openBracket - 1 && openBracket != 0) {
                 continue;
             }
             toReturn.add(markdown.substring(openParen + 1, closeParen));
