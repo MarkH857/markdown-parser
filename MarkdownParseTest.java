@@ -61,7 +61,7 @@ public class MarkdownParseTest {
     }
 
     @Test
-    public void testGetLinks7() throws IOException {
+    public void testSnippet1() throws IOException {
         Path fileName = Path.of("snippet1.md");
         String contentOfTest = Files.readString(fileName);
         ArrayList<String> expectedLinks = new ArrayList<>();
@@ -71,6 +71,88 @@ public class MarkdownParseTest {
         assertEquals(expectedLinks, MarkdownParse.getLinks(contentOfTest));
     }
 
+    @Test
+    public void testSnippet2() throws IOException {
+        Path fileName = Path.of("snippet2.md");
+        String contentOfTest = Files.readString(fileName);
+        ArrayList<String> expectedLinks = new ArrayList<>();
+        expectedLinks.add("a.com");
+        expectedLinks.add("a.com(())");
+        expectedLinks.add("example.com");
+        assertEquals(expectedLinks, MarkdownParse.getLinks(contentOfTest));
+    }
+
+    @Test
+    public void testSnippet3() throws IOException {
+        Path fileName = Path.of("snippet3.md");
+        String contentOfTest = Files.readString(fileName);
+        ArrayList<String> expectedLinks = new ArrayList<>();
+        expectedLinks.add("https://www.twitter.com");
+        expectedLinks.add("https://sites.google.com/eng.ucsd.edu/cse-15l-spring-2022/schedule");
+        expectedLinks.add("https://cse.ucsd.edu/");
+        assertEquals(expectedLinks, MarkdownParse.getLinks(contentOfTest));
+    }
+
+    @Test
+    public void testSnippet1Reviewed() throws IOException{
+        Path fileName = Path.of("snippet1.md"); 
+        String content = Files.readString(fileName);
+        String[] split = content.split("\n");
+        ArrayList<String> links = new ArrayList<String>();
+        for(String s: split){
+            String link = MarkdownParseReview.getLinks(s);
+            if(link != null && MarkdownParseReview.isValidLink(link)){
+                links.add(MarkdownParseReview.getLinks(s));
+            }
+        }
+
+        ArrayList<String> res = new ArrayList<String>();
+        res.add("'google.com");
+        res.add("google.com");
+        res.add("ucsd.edu");
+        assertEquals(res, links);
+    }
+
+    @Test
+    public void testSnippet2Reviewed() throws IOException{
+        Path fileName = Path.of("snippet2.md"); 
+        String content = Files.readString(fileName);
+        String[] split = content.split("\n");
+        ArrayList<String> links = new ArrayList<String>();
+        for(String s: split){
+            String link = MarkdownParseReview.getLinks(s);
+            if(link != null && MarkdownParseReview.isValidLink(link)){
+                links.add(MarkdownParseReview.getLinks(s));
+            }
+        }
+
+        ArrayList<String> res = new ArrayList<String>();
+        res.add("a.com");
+        res.add("a.com((");
+        res.add("example.com");
+        assertEquals(res, links);
+    }
+
+    @Test
+    public void testSnippet3Reviewed() throws Exception{
+        Path fileName = Path.of("snippet3.md"); 
+        String content = Files.readString(fileName);
+        String[] split = content.split("\n");
+        ArrayList<String> links = new ArrayList<String>();
+        for(String s: split){
+            String link = MarkdownParseReview.getLinks(s);
+            if(link != null && MarkdownParseReview.isValidLink(link)){
+                links.add(MarkdownParseReview.getLinks(s));
+            }
+        }
+
+        ArrayList<String> res = new ArrayList<String>();
+        res.add("https://www.twitter.com");
+        res.add("https://sites.google.com/eng.ucsd.edu/cse-15l-spring-2022/schedule");
+        res.add("https://cse.ucsd.edu/");
+        assertEquals(res, links);
+
+    }
 
 
 }
